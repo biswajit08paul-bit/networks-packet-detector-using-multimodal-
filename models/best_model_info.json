@@ -1,0 +1,21 @@
+{
+    "model_name": "Random Forest",
+    "metrics": {
+        "accuracy": 0.6244836650394292,
+        "precision": 0.6244836650394292,
+        "recall": 1.0,
+        "f1_score": 0.7688395746648173,
+        "confusion_matrix": [
+            [
+                0,
+                3000
+            ],
+            [
+                0,
+                4989
+            ]
+        ]
+    },
+    "timestamp": "2026-03-23 20:42:12",
+    "n_features": 5
+}

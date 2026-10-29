@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IDS Dashboard</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        button { padding: 10px; margin: 5px; }
+        .alert { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Intrusion Detection System</h1>
+    <p>Dashboard is running!</p>
+    <button onclick="start()">Start Monitoring</button>
+    <button onclick="stop()">Stop Monitoring</button>
+    <div id="status">Status: Idle</div>
+    <div id="alerts"></div>
+
+    <script>
+        async function start() {
+            await fetch('/api/simulate', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({action: 'start'})
+            });
+            document.getElementById('status').innerHTML = 'Status: Monitoring';
+        }
+
+        async function stop() {
+            await fetch('/api/simulate', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({action: 'stop'})
+            });
+            document.getElementById('status').innerHTML = 'Status: Stopped';
+        }
+
+        async function updateStatus() {
+            const res = await fetch('/api/status');
+            const data = await res.json();
+            document.getElementById('alerts').innerHTML = 
+                '<h3>Recent Alerts:</h3>' + 
+                (data.recent_alerts || []).map(a => 
+                    '<div class="alert">' + a.timestamp + ': ' + 
+                    (a.prediction === 1 ? 'ATTACK' : 'NORMAL') + 
+                    ' (' + (a.confidence*100).toFixed(1) + '%)</div>'
+                ).join('');
+        }
+
+        setInterval(updateStatus, 2000);
+    </script>
+</body>
+</html>
